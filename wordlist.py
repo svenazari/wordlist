@@ -29,7 +29,7 @@ def wordlist (): #definiranje fukcije
     cpog = len(odlomci) #broj članova u listi poglavalja
     for x in range (0, cpog): #micanje interpunkcijskih i ostalih znakova
       a = odlomci[x]
-      b = a.replace('/', ', ').replace('.', ', ').replace(',', ', ').replace('. ', ', ').replace('? ', ', ').replace('?', ', ').replace('! ', ', ').replace('!', ', ').replace('; ', ', ').replace(': ', ', ').replace('- ', ', ').replace(':', ', ').replace('(', ', ').replace(')', ', ').replace('"', ', ').replace('-', ', ').replace('–', ', ').replace('[', ', ').replace(']', ', ').replace('\ufeff', ', ').replace('*', ', ').replace('“', ', ').replace('„', ', ').replace("”", ", ").replace("—", ", ").replace("|", ", ").replace("”", ", ") #zamijeni sve što se treba izbaciti sa ", "
+      b = a.replace('/', ', ').replace('.', ', ').replace(',', ', ').replace('. ', ', ').replace('? ', ', ').replace('?', ', ').replace('! ', ', ').replace('!', ', ').replace('; ', ', ').replace(': ', ', ').replace('- ', ', ').replace(':', ', ').replace('(', ', ').replace(')', ', ').replace('"', ', ').replace('-', ', ').replace('–', ', ').replace('[', ', ').replace(']', ', ').replace('\ufeff', ', ').replace('*', ', ').replace('“', ', ').replace('„', ', ').replace("”", ", ").replace("—", ", ").replace("|", ", ").replace("”", ", ").replace("'", ", ") #zamijeni sve što se treba izbaciti sa ", "
       bez = b.split(', ') #izbaci ", "
       bezinterpunkcije.extend(bez) #dodaj u listu bezinterpunkcije
 
@@ -39,20 +39,20 @@ def wordlist (): #definiranje fukcije
       bezraz = a.split (" ") #razdvoji unose u listi na razmacima
       bezrazmak.extend(bezraz) #dodaj u listu bezrazmak
 
-    abecedno = sorted(bezrazmak)
-    while("" in abecedno): #očisti poglavalja od praznih redova
-      abecedno.remove("")
- 
-    bezduplih = list(dict.fromkeys(abecedno)) #micanje duplih unosa
-
+    bezduplih = list(dict.fromkeys(bezrazmak)) #micanje duplih unosa
+    while("" in bezduplih): #očisti od praznih unosa
+      bezduplih.remove("")
+    
     bezbrojeva = [x for x in bezduplih if not (x.isdigit() or x[0] == '-' and x[1:].isdigit())] #micanje brojeva
-
+    
     final = map(lambda x:x.lower(), bezbrojeva) #sve riječi napisane malim slovima (jer ako neka počinje sa velikim slovima, Ž bude ispred a - probati naći rješenje)
     
-    brojrijeci = len(bezbrojeva)
+    abecedno = sorted(final) #slaganje riječi po abecenom redu (zadnji korak prije ispisa)
+    
+    brojrijeci = len(abecedno) #brojanje jedinstvenih riječi
 
     with open("wordlist.txt", "w+") as wl: #otvori wordlist.txt datoteku
-      for item in final:
+      for item in abecedno:
         wl.write(item)
         wl.write('\n')
 
